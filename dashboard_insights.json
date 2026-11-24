@@ -1,0 +1,72 @@
+{
+  "total_valid_accounts": 11991,
+  "kmeans_silhouette": 0.3547,
+  "random_forest_accuracy": 76.91,
+  "correlations": [
+    {
+      "pair": "Log10 Followers vs Rank",
+      "pearson_r": -0.9519,
+      "pearson_p": 0.0,
+      "spearman_rho": -1.0,
+      "spearman_p": 0.0
+    },
+    {
+      "pair": "Followers vs 30-Day Growth (%)",
+      "pearson_r": 0.0083,
+      "pearson_p": 0.36058992883671753,
+      "spearman_rho": -0.1544,
+      "spearman_p": 7.003341432486989e-65
+    },
+    {
+      "pair": "Account Type (Person=1) vs Followers",
+      "pearson_r": 0.0801,
+      "pearson_p": 1.6076313153299328e-18,
+      "spearman_rho": 0.2502,
+      "spearman_p": 1.5557765322051685e-170
+    },
+    {
+      "pair": "Jumlah Negara Target vs Log10 Followers",
+      "pearson_r": 0.0303,
+      "pearson_p": 0.0008985125347587126,
+      "spearman_rho": 0.0202,
+      "spearman_p": 0.027290654423590015
+    }
+  ],
+  "clusters": [
+    {
+      "cluster": 0,
+      "total_accounts": 7235,
+      "avg_followers": 6695560.290670352,
+      "avg_growth_pct": 0.034578067176264334,
+      "avg_countries": 1.0
+    },
+    {
+      "cluster": 1,
+      "total_accounts": 2,
+      "avg_followers": 14981217.0,
+      "avg_growth_pct": 44.93411296384953,
+      "avg_countries": 1.0
+    },
+    {
+      "cluster": 2,
+      "total_accounts": 426,
+      "avg_followers": 3047981.382629108,
+      "avg_growth_pct": 0.022561910819662065,
+      "avg_countries": 0.0
+    },
+    {
+      "cluster": 3,
+      "total_accounts": 4328,
+      "avg_followers": 341120.6506469501,
+      "avg_growth_pct": 0.0005359521949311274,
+      "avg_countries": 1.0
+    }
+  ],
+  "feature_importance": {
+    "log_followers": 18.99,
+    "rank": 19.18,
+    "category_encoded": 38.45,
+    "name_length": 20.82,
+    "country_count": 2.56
+  }
+}

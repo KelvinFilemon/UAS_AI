@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InstaPulse AI — Top Instagram Analytics Dashboard</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            ig: {
+              purple: '#833AB4',
+              pink: '#E1306C',
+              red: '#FD1D1D',
+              orange: '#F56040',
+              yellow: '#FCAF45',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 selection:bg-pink-500 selection:text-white">
+
+  <!-- Top Instagram Signature Gradient Bar -->
+  <div class="h-1.5 w-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] sticky top-0 z-50"></div>
+
+  <!-- Navigation Header -->
+  <header class="sticky top-1.5 z-40 backdrop-blur-xl bg-white/85 dark:bg-slate-900/85 border-b border-slate-200/80 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FCAF45] via-[#E1306C] to-[#833AB4] p-[2px] shadow-md shadow-pink-500/20">
+          <div class="w-full h-full bg-white dark:bg-slate-900 rounded-[14px] flex items-center justify-center">
+            <i data-lucide="instagram" class="w-5 h-5 text-[#E1306C]"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F56040] bg-clip-text text-transparent">
+              InstaPulse AI
+            </span>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-pink-50 dark:bg-pink-950/60 text-[#E1306C] border border-pink-200/70 dark:border-pink-800/60">
+              UAS AI Project
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
+            Top Instagram Analytics, Correlation & Dual AI Lab
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Section Jump Links -->
+      <nav class="hidden lg:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+        <a href="#overview" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition">Ringkasan</a>
+        <a href="#exploration" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition">Eksplorasi Data</a>
+        <a href="#correlation" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition">Uji Korelasi</a>
+        <a href="#ai-lab" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition">Dual AI Models</a>
+        <a href="#objectives" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition">Tujuan Eksplorasi</a>
+      </nav>
+
+      <!-- Dark Mode Toggle & Dataset Badge -->
+      <div class="flex items-center gap-2.5">
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>11,991 Akun Valid</span>
+        </div>
+        <button id="themeToggle" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 transition">
+          <i data-lucide="moon" id="themeIconDark" class="w-4 h-4"></i>
+          <i data-lucide="sun" id="themeIconLight" class="w-4 h-4 hidden"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 1: HERO & OVERVIEW KPI CARDS                                  -->
+    <!-- ===================================================================== -->
+    <section id="overview" class="space-y-6">
+      <!-- Hero Banner -->
+      <div class="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+        <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-gradient-to-br from-[#833AB4]/15 via-[#E1306C]/15 to-[#F56040]/15 blur-2xl pointer-events-none"></div>
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="space-y-2 max-w-2xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-[#833AB4]/10 via-[#E1306C]/10 to-[#F56040]/10 border border-pink-200/60 dark:border-pink-800/40 text-xs font-semibold text-[#E1306C]">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+              <span>Data Preprocessing • Statistical Correlation • Unsupervised & Supervised AI</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Analisis Ekosistem <span class="bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F56040] bg-clip-text text-transparent">Top Instagram Accounts</span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              Eksplorasi mendalam terhadap <strong>11.991 akun Instagram teratas dunia</strong> (hasil pembersihan dari 11.998 baris mentah) menggunakan uji korelasi statistik, segmentasi <strong>K-Means Clustering (k=4)</strong>, dan klasifikasi <strong>Random Forest</strong>.
+            </p>
+          </div>
+
+          <!-- Preprocessing Pipeline Pill Summary -->
+          <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 bg-slate-50 dark:bg-slate-800/70 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-700/70 shrink-0">
+            <div class="text-center px-3">
+              <p class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Raw Data</p>
+              <p class="text-lg font-bold text-slate-700 dark:text-slate-200">11,998</p>
+            </div>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400"></i>
+            <div class="text-center px-3">
+              <p class="text-[11px] uppercase tracking-wider font-semibold text-rose-500">Anomali 0</p>
+              <p class="text-lg font-bold text-rose-600 dark:text-rose-400">-7</p>
+            </div>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400"></i>
+            <div class="text-center px-3">
+              <p class="text-[11px] uppercase tracking-wider font-semibold text-emerald-600 dark:text-emerald-400">Clean Valid</p>
+              <p class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">11,991</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 KPI Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <!-- KPI 1: Total Valid Accounts -->
+        <div class="group bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-purple-300/70 dark:hover:border-purple-700/70 transition">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Akun Valid</p>
+              <h2 class="text-3xl font-extrabold mt-2 text-slate-900 dark:text-white">11,991</h2>
+            </div>
+            <div class="w-11 h-11 rounded-2xl bg-purple-50 dark:bg-purple-950/60 flex items-center justify-center text-[#833AB4]">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <p class="mt-4 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">99.94%</span>
+            <span>lolos filtering dari 11,998 data</span>
+          </p>
+        </div>
+
+        <!-- KPI 2: Top Account & Top Individual -->
+        <div class="group bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-pink-300/70 dark:hover:border-pink-700/70 transition">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Akun #1 & Individu #1</p>
+              <h2 class="text-2xl font-extrabold mt-2 text-slate-900 dark:text-white">@instagram</h2>
+              <p class="text-xs font-semibold text-[#E1306C] mt-0.5">686.37M Followers</p>
+            </div>
+            <div class="w-11 h-11 rounded-2xl bg-pink-50 dark:bg-pink-950/60 flex items-center justify-center text-[#E1306C]">
+              <i data-lucide="crown" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-2.5">
+            <span>Individu #1: <strong class="text-slate-700 dark:text-slate-200">@cristiano</strong></span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300">679.75M</span>
+          </p>
+        </div>
+
+        <!-- KPI 3: Dominant Category -->
+        <div class="group bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-orange-300/70 dark:hover:border-orange-700/70 transition">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Kategori Dominan</p>
+              <h2 class="text-3xl font-extrabold mt-2 text-slate-900 dark:text-white">Sports</h2>
+            </div>
+            <div class="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 flex items-center justify-center text-[#F56040]">
+              <i data-lucide="trophy" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <p class="mt-4 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-orange-50 dark:bg-orange-950/60 text-[#F56040] font-semibold">3,611 akun (30.1%)</span>
+            <span>mengungguli Film & Music</span>
+          </p>
+        </div>
+
+        <!-- KPI 4: AI Model Performance -->
+        <div class="group bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-rose-300/70 dark:hover:border-rose-700/70 transition">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Performa Model AI</p>
+              <h2 class="text-2xl font-extrabold mt-2 text-slate-900 dark:text-white">RF 77.3%</h2>
+              <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">Akurasi Klasifikasi Tipe Akun</p>
+            </div>
+            <div class="w-11 h-11 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-[#FD1D1D]">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-2.5">
+            <span>K-Means (k=4) Silhouette</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200">0.45</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 2: INTERACTIVE DATA EXPLORATION & LEADERBOARD                 -->
+    <!-- ===================================================================== -->
+    <section id="exploration" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#E1306C]">01 • Eksplorasi Dataset & Distribusi</span>
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Peringkat Akun Top & Distribusi Kategori</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md">
+          Filter berdasarkan kategori, tipe akun (Person vs Organization), atau cari username secara langsung.
+        </p>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div id="categoryPills" class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Grid: Leaderboard Table (Left 7 cols) & Category Distribution Chart (Right 5 cols) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Leaderboard Card -->
+        <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
+          <!-- Table Toolbar: Search & Type Filter -->
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari @username, nama akun, atau negara..."
+                class="w-full pl-10 pr-4 py-2.5 text-sm rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-[#E1306C]/40 transition"
+              />
+            </div>
+
+            <!-- Account Type Segmented Control -->
+            <div class="inline-flex p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 shrink-0">
+              <button data-type="All" class="type-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm transition">Semua</button>
+              <button data-type="Person" class="type-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition">Person</button>
+              <button data-type="Organization" class="type-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition">Organization</button>
+            </div>
+          </div>
+
+          <!-- Responsive Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-100 dark:border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50/60 dark:bg-slate-800/40">
+                  <th class="py-3.5 px-4">Rank</th>
+                  <th class="py-3.5 px-4">Akun</th>
+                  <th class="py-3.5 px-4">Kategori</th>
+                  <th class="py-3.5 px-4 hidden sm:table-cell">Negara</th>
+                  <th class="py-3.5 px-4">Tipe</th>
+                  <th class="py-3.5 px-4 text-right">Followers</th>
+                  <th class="py-3.5 px-4 text-right">Growth 30d</th>
+                </tr>
+              </thead>
+              <tbody id="accountsTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyTableState" class="hidden py-12 px-6 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 mx-auto flex items-center justify-center text-slate-400 mb-3">
+              <i data-lucide="search-x" class="w-6 h-6"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Tidak ada akun yang cocok dengan filter</p>
+            <p class="text-xs text-slate-400 mt-1">Coba ubah kata kunci pencarian atau pilih kategori "All".</p>
+          </div>
+
+          <div class="px-5 py-3.5 bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span id="tableCountInfo">Menampilkan 15 akun sampel teratas</span>
+            <span>Sumber: <code class="text-[#E1306C] font-semibold">latest.csv</code></span>
+          </div>
+        </div>
+
+        <!-- Category Distribution Chart Card -->
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm space-y-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Distribusi Kategori (11,991 Akun)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Proporsi bidang industri top creators & brands</p>
+            </div>
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs">
+              <button id="chartBarBtn" class="px-2.5 py-1 rounded-lg font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-white">Bar</button>
+              <button id="chartDoughnutBtn" class="px-2.5 py-1 rounded-lg font-semibold text-slate-500 dark:text-slate-400">Donut</button>
+            </div>
+          </div>
+
+          <div class="relative h-72 w-full">
+            <canvas id="categoryChart"></canvas>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            <strong class="text-slate-900 dark:text-white">Insight Utama:</strong> Tiga kategori hiburan & olahraga (<em>Sports, Film & TV, Music</em>) mendominasi <strong>71.7% (8,604 akun)</strong> dari seluruh akun Instagram teratas dunia.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 3: STATISTICAL CORRELATION ANALYSIS (UJI KORELASI)            -->
+    <!-- ===================================================================== -->
+    <section id="correlation" class="space-y-6">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-[#833AB4]">02 • Pengujian Statistik (Pearson & Spearman)</span>
+        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Uji Korelasi Antar Variabel Utama</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Menggunakan korelasi <strong>Pearson (r)</strong> untuk hubungan linear dan <strong>Spearman (&rho;)</strong> untuk hubungan monotonik non-normal pada distribusi followers.
+        </p>
+      </div>
+
+      <!-- 3 Correlation Metric Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Corr Card 1 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-50 dark:bg-purple-950/60 text-[#833AB4]">Sangat Kuat Negatif</span>
+              <span class="text-xs font-mono text-slate-400">p &lt; 0.0001</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Log10 Followers vs Rank</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Membuktikan struktur hukum pangkat (<em>Power-Law</em>): semakin tinggi skala logaritmik followers, semakin kecil (baik) peringkat globalnya secara deterministik.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-3">
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Pearson (r)</p>
+              <p class="text-lg font-extrabold text-[#833AB4]">-0.9519</p>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Spearman (&rho;)</p>
+              <p class="text-lg font-extrabold text-slate-800 dark:text-white">-1.0000</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Corr Card 2 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-pink-50 dark:bg-pink-950/60 text-[#E1306C]">Signifikan Negatif</span>
+              <span class="text-xs font-mono text-slate-400">p = 4.42e-69</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Followers vs Follower Growth</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <strong>Efek Saturasi (Kejenuhan):</strong> Akun mega-selebritas mengalami pertumbuhan persentase lebih lambat dibanding akun <em>mid-tier</em> yang sedang naik daun.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-3">
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Spearman (&rho;)</p>
+              <p class="text-lg font-extrabold text-[#E1306C]">-0.1594</p>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Signifikansi</p>
+              <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1">Valid (p &lt; 0.01)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Corr Card 3 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-orange-50 dark:bg-orange-950/60 text-[#F56040]">Signifikan Positif</span>
+              <span class="text-xs font-mono text-slate-400">p &lt; 0.0001</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Account Type vs Followers</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <strong>Person &gt; Organization:</strong> Akun individu (atlet, musisi, aktor) memiliki rata-rata basis pengikut lebih tinggi dibanding akun merek/perusahaan.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-3">
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Spearman (&rho;)</p>
+              <p class="text-lg font-extrabold text-[#F56040]">+0.2502</p>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70">
+              <p class="text-[11px] text-slate-400">Dominasi</p>
+              <p class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">Individu (Person)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Chart: Followers Tier vs Growth Rate Comparison -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Perbandingan Rata-Rata Followers vs Laju Pertumbuhan (30 Hari) per Tier</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Visualisasi fenomena saturasi pertumbuhan pada akun mega-followers dibandingkan klaster viral</p>
+          </div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            <i data-lucide="trending-up" class="w-3.5 h-3.5 text-[#E1306C]"></i>
+            Dual-Axis Analytics
+          </span>
+        </div>
+        <div class="relative h-72 w-full">
+          <canvas id="correlationChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 4: DUAL AI MODELS INTERACTIVE LAB                             -->
+    <!-- ===================================================================== -->
+    <section id="ai-lab" class="space-y-8">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-[#FD1D1D]">03 • Eksperimen Machine Learning</span>
+        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Dual AI Models Interactive Lab</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Implementasi dua pendekatan AI: <strong>Unsupervised Learning (K-Means Clustering)</strong> untuk segmentasi pasar dan <strong>Supervised Learning (Random Forest)</strong> untuk prediksi tipe akun.
+        </p>
+      </div>
+
+      <!-- MODEL 1: K-MEANS CLUSTERING (k=4) -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#833AB4] to-[#E1306C] text-white flex items-center justify-center shadow-md shadow-purple-500/20">
+              <i data-lucide="network" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Model 1: K-Means Clustering (k = 4)</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 dark:bg-purple-950/70 text-[#833AB4] border border-purple-200/70 dark:border-purple-800/60">
+                  Silhouette: 0.45
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Segmentasi otomatis 11,991 akun berdasarkan Log10 Followers, Growth Rate, Jangkauan Negara, dan Panjang Nama.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- 4 Cluster Interactive Cards -->
+          <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4" id="clusterCardsContainer">
+            <!-- Cluster 0 -->
+            <div data-cluster="0" class="cluster-card cursor-pointer rounded-2xl p-5 border-2 border-[#833AB4] bg-purple-50/40 dark:bg-purple-950/20 transition">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#833AB4] text-white">Cluster 0</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">54.6% Populasi</span>
+              </div>
+              <h4 class="font-bold text-base text-slate-900 dark:text-white mt-3">Macro Stabil</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akun besar mapan dengan basis massa solid & fluktuasi stabil.</p>
+              <div class="mt-4 pt-3 border-t border-purple-200/60 dark:border-purple-800/40 grid grid-cols-3 gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Jumlah</span>
+                  <strong class="text-slate-800 dark:text-slate-100">6,553</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Avg Followers</span>
+                  <strong class="text-slate-800 dark:text-slate-100">6.76M</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Growth</span>
+                  <strong class="text-slate-600 dark:text-slate-300">-0.01%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cluster 1 -->
+            <div data-cluster="1" class="cluster-card cursor-pointer rounded-2xl p-5 border border-slate-200 dark:border-slate-700 hover:border-[#E1306C] bg-slate-50/60 dark:bg-slate-800/40 transition">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#E1306C] text-white">Cluster 1</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">37.7% Populasi</span>
+              </div>
+              <h4 class="font-bold text-base text-slate-900 dark:text-white mt-3">Mid-Tier / Niche</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Kreator & merek spesialis dengan audiens terfokus.</p>
+              <div class="mt-4 pt-3 border-t border-slate-200/70 dark:border-slate-700 grid grid-cols-3 gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Jumlah</span>
+                  <strong class="text-slate-800 dark:text-slate-100">4,515</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Avg Followers</span>
+                  <strong class="text-slate-800 dark:text-slate-100">97.4K</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Growth</span>
+                  <strong class="text-slate-600 dark:text-slate-300">0.00%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cluster 2 -->
+            <div data-cluster="2" class="cluster-card cursor-pointer rounded-2xl p-5 border border-slate-200 dark:border-slate-700 hover:border-[#F56040] bg-slate-50/60 dark:bg-slate-800/40 transition">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#F56040] text-white">Cluster 2</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">6.6% Populasi</span>
+              </div>
+              <h4 class="font-bold text-base text-slate-900 dark:text-white mt-3">Global Multi-Region</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akun lintas negara dengan rata-rata 2.09 negara target audiens.</p>
+              <div class="mt-4 pt-3 border-t border-slate-200/70 dark:border-slate-700 grid grid-cols-3 gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Jumlah</span>
+                  <strong class="text-slate-800 dark:text-slate-100">786</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Avg Followers</span>
+                  <strong class="text-slate-800 dark:text-slate-100">6.67M</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Avg Negara</span>
+                  <strong class="text-[#F56040]">2.09</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cluster 3 -->
+            <div data-cluster="3" class="cluster-card cursor-pointer rounded-2xl p-5 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 bg-slate-50/60 dark:bg-slate-800/40 transition">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-600 text-white">Cluster 3</span>
+                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">1.1% Populasi</span>
+              </div>
+              <h4 class="font-bold text-base text-slate-900 dark:text-white mt-3">Viral High-Growth</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Kelompok elite dengan lonjakan pertumbuhan tercepat (+3.41%).</p>
+              <div class="mt-4 pt-3 border-t border-slate-200/70 dark:border-slate-700 grid grid-cols-3 gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Jumlah</span>
+                  <strong class="text-slate-800 dark:text-slate-100">137</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Avg Followers</span>
+                  <strong class="text-slate-800 dark:text-slate-100">9.32M</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Growth</span>
+                  <strong class="text-emerald-600 dark:text-emerald-400">+3.41%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- K-Means Cluster Chart -->
+          <div class="lg:col-span-5 bg-slate-50/70 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200/60 dark:border-slate-700/60">
+            <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 mb-1">Proporsi Populasi & Rata-rata Followers Klaster</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Klik kartu klaster di samping untuk menyoroti detail profilnya</p>
+            <div class="relative h-64 w-full">
+              <canvas id="kmeansChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODEL 2: RANDOM FOREST CLASSIFIER SIMULATOR -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#E1306C] to-[#F56040] text-white flex items-center justify-center shadow-md shadow-pink-500/20">
+              <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Model 2: Random Forest Classifier Simulator</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 border border-emerald-200/70 dark:border-emerald-800/60">
+                  Akurasi: 77.3%
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Simulasi prediksi langsung apakah sebuah akun merupakan <strong>Person (Individu)</strong> atau <strong>Organization (Brand/Media)</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Interactive Input Controls (Left 6 cols) -->
+          <div class="lg:col-span-6 space-y-5 bg-slate-50/80 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200/70 dark:border-slate-700/70">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="sliders-horizontal" class="w-4 h-4 text-[#E1306C]"></i>
+                <span>Parameter Input Akun</span>
+              </h4>
+              <button id="resetSimulatorBtn" class="text-xs font-semibold text-[#E1306C] hover:underline">Reset Default</button>
+            </div>
+
+            <!-- Slider 1: Followers (Millions) -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <label for="simFollowers" class="font-semibold text-slate-700 dark:text-slate-200">Jumlah Followers</label>
+                <span id="simFollowersLabel" class="font-bold text-[#833AB4]">45.0 Juta (Log10: 7.65)</span>
+              </div>
+              <input type="range" id="simFollowers" min="0.1" max="680" step="0.5" value="45" class="w-full accent-[#E1306C] cursor-pointer" />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>100K</span>
+                <span>100M</span>
+                <span>350M</span>
+                <span>680M</span>
+              </div>
+            </div>
+
+            <!-- Select 2: Category -->
+            <div class="space-y-1.5">
+              <label for="simCategory" class="block text-xs font-semibold text-slate-700 dark:text-slate-200">Kategori Utama Akun</label>
+              <select id="simCategory" class="w-full px-3.5 py-2.5 rounded-xl text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-[#E1306C]/40">
+                <option value="Sports" selected>Sports (Atlet / Klub Olahraga)</option>
+                <option value="Film & TV">Film & TV (Aktor / Studio)</option>
+                <option value="Music">Music (Musisi / Label)</option>
+                <option value="Public figures">Public figures (Tokoh Publik)</option>
+                <option value="Creators">Creators (Content Creator)</option>
+                <option value="Fashion & beauty">Fashion & beauty</option>
+                <option value="Brands & Companies">Brands & Companies</option>
+                <option value="Media">Media & News</option>
+              </select>
+            </div>
+
+            <!-- Slider 3: Target Countries -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <label for="simCountries" class="font-semibold text-slate-700 dark:text-slate-200">Jumlah Negara Basis Audiens</label>
+                <span id="simCountriesLabel" class="font-bold text-[#F56040]">1 Negara</span>
+              </div>
+              <input type="range" id="simCountries" min="1" max="5" step="1" value="1" class="w-full accent-[#F56040] cursor-pointer" />
+            </div>
+
+            <!-- Slider 4: Account Name Length -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <label for="simNameLen" class="font-semibold text-slate-700 dark:text-slate-200">Panjang Karakter Nama Akun</label>
+                <span id="simNameLenLabel" class="font-bold text-slate-700 dark:text-slate-200">14 Karakter</span>
+              </div>
+              <input type="range" id="simNameLen" min="4" max="35" step="1" value="14" class="w-full accent-[#833AB4] cursor-pointer" />
+            </div>
+          </div>
+
+          <!-- Prediction Output & Feature Importance (Right 6 cols) -->
+          <div class="lg:col-span-6 space-y-5">
+            <!-- Live Prediction Card -->
+            <div id="predictionResultBox" class="rounded-2xl p-6 bg-gradient-to-br from-[#833AB4]/10 via-[#E1306C]/10 to-[#F56040]/10 border border-pink-200/80 dark:border-pink-800/50 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Hasil Prediksi Model AI</span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                  Real-Time Inference
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                  <div id="predIconWrap" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#833AB4] to-[#E1306C] text-white flex items-center justify-center shadow-lg">
+                    <i data-lucide="user-check" id="predIcon" class="w-7 h-7"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Klasifikasi Tipe Akun:</p>
+                    <h4 id="predClassLabel" class="text-2xl font-extrabold text-slate-900 dark:text-white">Person (Individu)</h4>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Confidence</p>
+                  <p id="predConfidence" class="text-2xl font-extrabold bg-gradient-to-r from-[#833AB4] to-[#E1306C] bg-clip-text text-transparent">86.4%</p>
+                </div>
+              </div>
+
+              <!-- Probability Bar -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs font-semibold">
+                  <span class="text-[#833AB4]">Person: <span id="probPersonText">86.4%</span></span>
+                  <span class="text-[#F56040]">Organization: <span id="probOrgText">13.6%</span></span>
+                </div>
+                <div class="w-full h-3 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden flex">
+                  <div id="probPersonBar" class="h-full bg-gradient-to-r from-[#833AB4] to-[#E1306C] transition-all duration-300" style="width: 86.4%"></div>
+                  <div id="probOrgBar" class="h-full bg-[#F56040] transition-all duration-300" style="width: 13.6%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Importance Breakdown -->
+            <div class="p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Feature Importance (Random Forest)</h4>
+                <span class="text-[11px] text-slate-400">Kontribusi Fitur</span>
+              </div>
+              <div class="space-y-2.5 text-xs">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-200">1. Log10 Followers</span>
+                    <span class="font-bold text-[#833AB4]">20.5%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div class="h-full bg-[#833AB4] rounded-full" style="width: 82%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-200">2. Global Rank</span>
+                    <span class="font-bold text-[#E1306C]">20.4%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div class="h-full bg-[#E1306C] rounded-full" style="width: 81%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-200">3. Category</span>
+                    <span class="font-bold text-[#FD1D1D]">20.3%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div class="h-full bg-[#FD1D1D] rounded-full" style="width: 80%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-200">4. Account Name Length</span>
+                    <span class="font-bold text-[#F56040]">16.6%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div class="h-full bg-[#F56040] rounded-full" style="width: 66%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-200">5. Target Countries</span>
+                    <span class="font-bold text-amber-500">12.3%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div class="h-full bg-amber-500 rounded-full" style="width: 49%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 5: HAL YANG DIEKSPLORASI (RESEARCH OBJECTIVES SUMMARY)        -->
+    <!-- ===================================================================== -->
+    <section id="objectives" class="space-y-6">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-[#F56040]">04 • Ringkasan Laporan UAS</span>
+        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Hal yang Dieksplorasi dalam Dataset</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Empat rumusan masalah utama yang dijawab melalui pendekatan Data Science & Artificial Intelligence.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Objective 1 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-[#833AB4] font-extrabold text-sm flex items-center justify-center">01</span>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Struktur Distribusi & Dominasi Industri</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Mengeksplorasi ketimpangan distribusi followers (<em>Power-Law</em>) serta mengidentifikasi kategori konten paling dominan. Terbukti sektor <strong>Sports (30.1%)</strong>, <strong>Film & TV (21.5%)</strong>, dan <strong>Music (20.2%)</strong> menguasai lebih dari 71% ekosistem top Instagram.
+          </p>
+        </div>
+
+        <!-- Objective 2 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-pink-50 dark:bg-pink-950/60 text-[#E1306C] font-extrabold text-sm flex items-center justify-center">02</span>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Fenomena Saturasi Pertumbuhan (Growth Dynamics)</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Menguji apakah akun dengan followers raksasa selalu tumbuh paling cepat. Uji korelasi Spearman (<strong>&rho; = -0.1594, p = 4.42e-69</strong>) membuktikan sebaliknya: akun mega-selebritas mengalami saturasi, sedangkan akun <em>rising mid-tier</em> mencetak persentase pertumbuhan lebih tinggi.
+          </p>
+        </div>
+
+        <!-- Objective 3 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-950/60 text-[#F56040] font-extrabold text-sm flex items-center justify-center">03</span>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Segmentasi Persona Audiens (K-Means Clustering)</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Mengelompokkan 11,991 akun tanpa label awal menjadi <strong>4 segmen strategis</strong> (<em>Macro Stabil, Mid-Tier Niche, Global Multi-Region, dan Viral High-Growth</em>) dengan skor Silhouette <strong>0.45</strong> untuk membantu strategi pemilihan KOL/Influencer marketing.
+          </p>
+        </div>
+
+        <!-- Objective 4 -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-extrabold text-sm flex items-center justify-center">04</span>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Prediksi Entitas Akun (Random Forest Classifier)</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Membangun model klasifikasi terawasi untuk membedakan akun <strong>Person</strong> vs <strong>Organization</strong> dengan akurasi <strong>77.3%</strong>, sekaligus mengungkap bahwa skala followers, peringkat, dan kategori menjadi pembeda terkuat.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F56040] bg-clip-text text-transparent">InstaPulse AI</span>
+        <span>•</span>
+        <span>Dashboard Analisis UAS Artificial Intelligence</span>
+      </div>
+      <div>
+        <span>Dataset: 11,991 Valid Top Instagram Accounts • Models: K-Means (k=4) & Random Forest</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: DATA, CHARTS, FILTERING & AI SIMULATOR LOGIC              -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. Dataset Sampel Nyata Top Instagram Accounts (15 Akun Representatif)
+    const topAccountsData = [
+      { rank: 1, username: "@instagram", name: "Instagram", category: "Brands & Companies", country: "United States", type: "Organization", followers: 686.37, growth: 0.12 },
+      { rank: 2, username: "@cristiano", name: "Cristiano Ronaldo", category: "Sports", country: "Portugal", type: "Person", followers: 679.75, growth: 0.48 },
+      { rank: 3, username: "@leomessi", name: "Leo Messi", category: "Sports", country: "Argentina", type: "Person", followers: 505.12, growth: 0.31 },
+      { rank: 4, username: "@selenagomez", name: "Selena Gomez", category: "Music", country: "United States", type: "Person", followers: 422.84, growth: -0.05 },
+      { rank: 5, username: "@kyliejenner", name: "Kylie Jenner", category: "Fashion & beauty", country: "United States", type: "Person", followers: 394.60, growth: -0.08 },
+      { rank: 6, username: "@therock", name: "Dwayne Johnson", category: "Film & TV", country: "United States", type: "Person", followers: 394.15, growth: 0.04 },
+      { rank: 7, username: "@arianagrande", name: "Ariana Grande", category: "Music", country: "United States", type: "Person", followers: 376.22, growth: 0.09 },
+      { rank: 8, username: "@kimkardashian", name: "Kim Kardashian", category: "Public figures", country: "United States", type: "Person", followers: 358.90, growth: -0.06 },
+      { rank: 9, username: "@beyonce", name: "Beyoncé", category: "Music", country: "United States", type: "Person", followers: 313.45, growth: 0.07 },
+      { rank: 10, username: "@nike", name: "Nike", category: "Brands & Companies", country: "United States", type: "Organization", followers: 302.18, growth: 0.03 },
+      { rank: 11, username: "@natgeo", name: "National Geographic", category: "Media", country: "United States", type: "Organization", followers: 279.80, growth: -0.04 },
+      { rank: 12, username: "@taylorswift", name: "Taylor Swift", category: "Music", country: "United States", type: "Person", followers: 282.55, growth: 0.22 },
+      { rank: 13, username: "@virat.kohli", name: "Virat Kohli", category: "Sports", country: "India", type: "Person", followers: 270.94, growth: 0.36 },
+      { rank: 14, username: "@lalalalisa_m", name: "LISA", category: "Creators", country: "Thailand", type: "Person", followers: 105.42, growth: 1.45 },
+      { rank: 15, username: "@jennierubyjane", name: "JENNIE", category: "Creators", country: "South Korea", type: "Person", followers: 86.78, growth: 1.18 }
+    ];
+
+    // 2. Data Distribusi Kategori Keseluruhan (Total = 11,991 akun)
+    const categoryStats = [
+      { label: "Sports", count: 3611, color: "#833AB4" },
+      { label: "Film & TV", count: 2572, color: "#E1306C" },
+      { label: "Music", count: 2421, color: "#FD1D1D" },
+      { label: "Public figures", count: 1418, color: "#F56040" },
+      { label: "Brands & Companies", count: 832, color: "#FCAF45" },
+      { label: "Media", count: 434, color: "#6366F1" },
+      { label: "Other", count: 400, color: "#94A3B8" },
+      { label: "Creators", count: 167, color: "#10B981" },
+      { label: "Fashion & beauty", count: 136, color: "#EC4899" }
+    ];
+
+    // State Filter
+    let activeCategory = "All";
+    let activeType = "All";
+    let searchQuery = "";
+    let categoryChartInstance = null;
+    let correlationChartInstance = null;
+    let kmeansChartInstance = null;
+
+    // 3. Render Category Filter Pills
+    function renderCategoryPills() {
+      const container = document.getElementById("categoryPills");
+      const allCategories = ["All", ...categoryStats.filter(c => c.label !== "Other").map(c => c.label)];
+
+      container.innerHTML = allCategories.map(cat => {
+        const isSelected = activeCategory === cat;
+        const countObj = categoryStats.find(c => c.label === cat);
+        const badgeText = cat === "All" ? "11,991" : (countObj ? countObj.count.toLocaleString() : "");
+
+        return `
+          <button
+            data-cat="${cat}"
+            class="cat-pill shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-semibold transition border ${
+              isSelected
+                ? "bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F56040] text-white border-transparent shadow-sm"
+                : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800 hover:border-pink-300 dark:hover:border-pink-700"
+            }"
+          >
+            <span>${cat}</span>
+            <span class="px-1.5 py-0.5 rounded-lg text-[10px] ${
+              isSelected ? "bg-white/20 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+            }">${badgeText}</span>
+          </button>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".cat-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.getAttribute("data-cat");
+          renderCategoryPills();
+          renderLeaderboardTable();
+        });
+      });
+    }
+
+    // 4. Render Interactive Leaderboard Table
+    function renderLeaderboardTable() {
+      const tbody = document.getElementById("accountsTableBody");
+      const emptyState = document.getElementById("emptyTableState");
+      const countInfo = document.getElementById("tableCountInfo");
+
+      const filtered = topAccountsData.filter(acc => {
+        const matchCat = activeCategory === "All" || acc.category === activeCategory;
+        const matchType = activeType === "All" || acc.type === activeType;
+        const q = searchQuery.toLowerCase().trim();
+        const matchSearch =
+          !q ||
+          acc.username.toLowerCase().includes(q) ||
+          acc.name.toLowerCase().includes(q) ||
+          acc.country.toLowerCase().includes(q);
+        return matchCat && matchType && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        countInfo.textContent = "Menampilkan 0 akun";
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      countInfo.textContent = `Menampilkan ${filtered.length} dari ${topAccountsData.length} akun sampel`;
+
+      tbody.innerHTML = filtered.map(acc => {
+        const isPositive = acc.growth >= 0;
+        const growthFormatted = `${isPositive ? "+" : ""}${acc.growth.toFixed(2)}%`;
+        const rankBadge =
+          acc.rank === 1
+            ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300 border border-amber-300/60"
+            : acc.rank <= 3
+            ? "bg-pink-50 text-[#E1306C] dark:bg-pink-950/70 dark:text-pink-300"
+            : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
+
+        return `
+          <tr class="hover:bg-slate-50/90 dark:hover:bg-slate-800/50 transition">
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl text-xs font-extrabold ${rankBadge}">
+                #${acc.rank}
+              </span>
+            </td>
+            <td class="py-3.5 px-4">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#FCAF45] via-[#E1306C] to-[#833AB4] p-[1.5px] shrink-0">
+                  <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-200">
+                    ${acc.name.charAt(0)}
+                  </div>
+                </div>
+                <div>
+                  <p class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${acc.username}</p>
+                  <p class="text-[11px] text-slate-400">${acc.name}</p>
+                </div>
+              </div>
+            </td>
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-purple-50 dark:bg-purple-950/50 text-[#833AB4] dark:text-purple-300">
+                ${acc.category}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 text-xs text-slate-600 dark:text-slate-300 hidden sm:table-cell">
+              ${acc.country}
+            </td>
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[11px] font-semibold ${
+                acc.type === "Person"
+                  ? "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-300"
+                  : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+              }">
+                ${acc.type}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 text-right font-extrabold text-slate-900 dark:text-white text-xs sm:text-sm">
+              ${acc.followers.toFixed(2)}M
+            </td>
+            <td class="py-3.5 px-4 text-right">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold ${
+                isPositive
+                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
+                  : "bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400"
+              }">
+                ${growthFormatted}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 5. Initialize All Chart.js Visualizations
+    function initCharts() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const textColor = isDark ? "#cbd5e1" : "#475569";
+      const gridColor = isDark ? "rgba(148, 163, 184, 0.12)" : "rgba(148, 163, 184, 0.18)";
+
+      // Chart A: Category Distribution (Bar / Doughnut)
+      renderCategoryChart("bar", textColor, gridColor);
+
+      // Chart B: Correlation Comparison (Followers vs Growth across Clusters)
+      const ctxCorr = document.getElementById("correlationChart").getContext("2d");
+      if (correlationChartInstance) correlationChartInstance.destroy();
+      correlationChartInstance = new Chart(ctxCorr, {
+        type: "bar",
+        data: {
+          labels: [
+            "Cluster 1: Mid-Tier Niche (97.4K)",
+            "Cluster 2: Global Multi-Region (6.67M)",
+            "Cluster 0: Macro Stabil (6.76M)",
+            "Cluster 3: Viral High-Growth (9.32M)",
+            "Top 10 Mega Accounts (>300M)"
+          ],
+          datasets: [
+            {
+              label: "Rata-rata Followers (Juta)",
+              data: [0.097, 6.67, 6.76, 9.32, 439.9],
+              backgroundColor: "rgba(131, 58, 180, 0.78)",
+              borderRadius: 8,
+              yAxisID: "y"
+            },
+            {
+              label: "Rata-rata 30-Day Growth (%)",
+              data: [0.00, 0.18, -0.01, 3.41, 0.08],
+              type: "line",
+              borderColor: "#E1306C",
+              backgroundColor: "#E1306C",
+              borderWidth: 3,
+              pointRadius: 5,
+              tension: 0.35,
+              yAxisID: "y1"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { labels: { color: textColor, font: { family: "Inter", size: 12 } } }
+          },
+          scales: {
+            x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
+            y: {
+              type: "logarithmic",
+              position: "left",
+              title: { display: true, text: "Avg Followers (Skala Log - Juta)", color: textColor, font: { size: 11 } },
+              ticks: { color: textColor },
+              grid: { color: gridColor }
+            },
+            y1: {
+              type: "linear",
+              position: "right",
+              title: { display: true, text: "Growth 30 Hari (%)", color: "#E1306C", font: { size: 11 } },
+              ticks: { color: "#E1306C" },
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
+
+      // Chart C: K-Means Clustering Doughnut
+      const ctxKmeans = document.getElementById("kmeansChart").getContext("2d");
+      if (kmeansChartInstance) kmeansChartInstance.destroy();
+      kmeansChartInstance = new Chart(ctxKmeans, {
+        type: "doughnut",
+        data: {
+          labels: [
+            "Cluster 0: Macro Stabil (6,553)",
+            "Cluster 1: Mid-Tier Niche (4,515)",
+            "Cluster 2: Global Multi-Region (786)",
+            "Cluster 3: Viral High-Growth (137)"
+          ],
+          datasets: [
+            {
+              data: [6553, 4515, 786, 137],
+              backgroundColor: ["#833AB4", "#E1306C", "#F56040", "#10B981"],
+              borderWidth: 2,
+              borderColor: isDark ? "#0f172a" : "#ffffff",
+              hoverOffset: 8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "62%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { color: textColor, boxWidth: 12, padding: 12, font: { family: "Inter", size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    function renderCategoryChart(type, textColor, gridColor) {
+      const ctx = document.getElementById("categoryChart").getContext("2d");
+      if (categoryChartInstance) categoryChartInstance.destroy();
+
+      const isBar = type === "bar";
+      categoryChartInstance = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: categoryStats.map(c => c.label),
+          datasets: [
+            {
+              label: "Jumlah Akun",
+              data: categoryStats.map(c => c.count),
+              backgroundColor: categoryStats.map(c => c.color),
+              borderRadius: isBar ? 8 : 0,
+              borderWidth: isBar ? 0 : 2,
+              borderColor: "#ffffff"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: isBar ? "y" : "x",
+          plugins: {
+            legend: { display: !isBar, position: "bottom", labels: { color: textColor, font: { size: 11 } } }
+          },
+          scales: isBar
+            ? {
+                x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+                y: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } }
+              }
+            : {}
+        }
+      });
+    }
+
+    // 6. Random Forest Interactive Live AI Simulator Logic
+    function updateRandomForestSimulator() {
+      const followersM = parseFloat(document.getElementById("simFollowers").value);
+      const category = document.getElementById("simCategory").value;
+      const countries = parseInt(document.getElementById("simCountries").value, 10);
+      const nameLen = parseInt(document.getElementById("simNameLen").value, 10);
+
+      // Update Labels
+      const logFollowers = Math.log10(followersM * 1_000_000).toFixed(2);
+      document.getElementById("simFollowersLabel").textContent = `${followersM.toFixed(1)} Juta (Log10: ${logFollowers})`;
+      document.getElementById("simCountriesLabel").textContent = `${countries} Negara`;
+      document.getElementById("simNameLenLabel").textContent = `${nameLen} Karakter`;
+
+      // Heuristic Probabilities mirroring trained Random Forest Feature Importance:
+      // Log Followers (20.5%), Rank (20.4%), Category (20.3%), Name Length (16.6%), Country (12.3%)
+      let personScore = 0.50;
+
+      // Category effect
+      const categoryWeights = {
+        "Sports": +0.22,
+        "Film & TV": +0.20,
+        "Music": +0.24,
+        "Public figures": +0.25,
+        "Creators": +0.26,
+        "Fashion & beauty": +0.08,
+        "Brands & Companies": -0.34,
+        "Media": -0.32
+      };
+      personScore += categoryWeights[category] || 0;
+
+      // Followers / Rank effect (Person accounts have +0.2502 correlation with higher followers)
+      if (followersM >= 50) personScore += 0.11;
+      else if (followersM >= 10) personScore += 0.05;
+      else if (followersM < 1) personScore -= 0.06;
+
+      // Name length effect (Brands/Media often have slightly longer official names)
+      if (nameLen > 20) personScore -= 0.08;
+      else if (nameLen <= 14) personScore += 0.04;
+
+      // Multi-country effect (Global brands/media tend to list multiple regions)
+      if (countries >= 3) personScore -= 0.10;
+
+      // Clamp between 6% and 96%
+      personScore = Math.max(0.06, Math.min(0.96, personScore));
+      const personPct = (personScore * 100).toFixed(1);
+      const orgPct = (100 - personScore * 100).toFixed(1);
+      const isPerson = personScore >= 0.5;
+
+      // Update UI Elements
+      const predClassLabel = document.getElementById("predClassLabel");
+      const predConfidence = document.getElementById("predConfidence");
+      const predIconWrap = document.getElementById("predIconWrap");
+
+      predClassLabel.textContent = isPerson ? "Person (Individu)" : "Organization (Brand/Media)";
+      predConfidence.textContent = `${isPerson ? personPct : orgPct}%`;
+
+      if (isPerson) {
+        predIconWrap.className = "w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#833AB4] to-[#E1306C] text-white flex items-center justify-center shadow-lg";
+        predIconWrap.innerHTML = `<i data-lucide="user-check" class="w-7 h-7"></i>`;
+      } else {
+        predIconWrap.className = "w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#F56040] to-[#FCAF45] text-white flex items-center justify-center shadow-lg";
+        predIconWrap.innerHTML = `<i data-lucide="building-2" class="w-7 h-7"></i>`;
+      }
+
+      document.getElementById("probPersonText").textContent = `${personPct}%`;
+      document.getElementById("probOrgText").textContent = `${orgPct}%`;
+      document.getElementById("probPersonBar").style.width = `${personPct}%`;
+      document.getElementById("probOrgBar").style.width = `${orgPct}%`;
+
+      lucide.createIcons();
+    }
+
+    // 7. Event Listeners & Initialization
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      renderCategoryPills();
+      renderLeaderboardTable();
+      initCharts();
+      updateRandomForestSimulator();
+
+      // Search Input
+      document.getElementById("searchInput").addEventListener("input", e => {
+        searchQuery = e.target.value;
+        renderLeaderboardTable();
+      });
+
+      // Type Filter Buttons
+      document.querySelectorAll(".type-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeType = btn.getAttribute("data-type");
+          document.querySelectorAll(".type-filter-btn").forEach(b => {
+            b.className = "type-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition";
+          });
+          btn.className = "type-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm transition";
+          renderLeaderboardTable();
+        });
+      });
+
+      // Chart Type Switcher (Bar vs Doughnut)
+      document.getElementById("chartBarBtn").addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        renderCategoryChart("bar", isDark ? "#cbd5e1" : "#475569", isDark ? "rgba(148,163,184,0.12)" : "rgba(148,163,184,0.18)");
+        document.getElementById("chartBarBtn").className = "px-2.5 py-1 rounded-lg font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-white";
+        document.getElementById("chartDoughnutBtn").className = "px-2.5 py-1 rounded-lg font-semibold text-slate-500 dark:text-slate-400";
+      });
+
+      document.getElementById("chartDoughnutBtn").addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        renderCategoryChart("doughnut", isDark ? "#cbd5e1" : "#475569", "");
+        document.getElementById("chartDoughnutBtn").className = "px-2.5 py-1 rounded-lg font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-white";
+        document.getElementById("chartBarBtn").className = "px-2.5 py-1 rounded-lg font-semibold text-slate-500 dark:text-slate-400";
+      });
+
+      // K-Means Cluster Card Selection Highlight
+      document.querySelectorAll(".cluster-card").forEach(card => {
+        card.addEventListener("click", () => {
+          document.querySelectorAll(".cluster-card").forEach(c => {
+            c.classList.remove("border-2", "border-[#833AB4]", "bg-purple-50/40", "dark:bg-purple-950/20");
+            c.classList.add("border", "border-slate-200", "dark:border-slate-700");
+          });
+          card.classList.remove("border", "border-slate-200", "dark:border-slate-700");
+          card.classList.add("border-2", "border-[#833AB4]", "bg-purple-50/40", "dark:bg-purple-950/20");
+        });
+      });
+
+      // Random Forest Simulator Listeners
+      ["simFollowers", "simCategory", "simCountries", "simNameLen"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateRandomForestSimulator);
+      });
+
+      document.getElementById("resetSimulatorBtn").addEventListener("click", () => {
+        document.getElementById("simFollowers").value = 45;
+        document.getElementById("simCategory").value = "Sports";
+        document.getElementById("simCountries").value = 1;
+        document.getElementById("simNameLen").value = 14;
+        updateRandomForestSimulator();
+      });
+
+      // Dark Mode Toggle
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        document.getElementById("themeIconDark").classList.toggle("hidden", isDark);
+        document.getElementById("themeIconLight").classList.toggle("hidden", !isDark);
+        initCharts();
+      });
+    });
+  </script>
+</body>
+</html>
